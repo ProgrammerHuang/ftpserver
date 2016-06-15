@@ -44,8 +44,12 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@autovance/database": "^0.1.120",
+    "dotenv": "^2.0.0",
     "eventemitter3": "^1.2.0",
     "lodash": "^4.13.1",
+    "moment": "^2.13.0",
+    "queue": "^4.0.0",
     "when": "^3.7.7"
   }
 }
