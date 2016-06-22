@@ -43,12 +43,13 @@ gulp.task('test', ['pre-test'], function (cb) {
     .pipe(plumber())
     .pipe(mocha({reporter: 'spec'}))
     .on('error', function (err) {
-      console.error('[Test Error]', err);
+      console.error('Mocha::', 'err', err);
       mochaErr = err;
     })
     .pipe(istanbul.writeReports())
     .on('end', function () {
       cb(mochaErr);
+      process.exit(0);
     });
 });
 
