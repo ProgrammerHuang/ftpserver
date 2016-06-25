@@ -22,7 +22,8 @@ describe('FTPServer', function () {
       host: '127.0.0.1',
       port: 7002,
       pasvStart: 30000,
-      pasvEnd: 31000
+      pasvEnd: 31000,
+      debugMode: true
     });
     ftpServer.listen();
   });
@@ -86,13 +87,26 @@ describe('FTPServer', function () {
       });
 
     });
+
     describe('list', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.raw.list((err, data) => {
+        ftpClient.list('/home/tyler/Documents', (hasError, data) => {
+          expect(hasError).to.equal(false);
+          expect(data).to.exist;
+          done();
+        });
+      });
+
+    });
+
+    describe('stat', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.ls('/home/tyler/Documents', (err, data) => {
           expect(err).to.not.exist;
-          expect(data.isError).to.equal(false);
-          expect(data.code).to.equal(257);
+          expect(data).to.be.an('array');
+          expect(data.length).to.be.above(0);
           done();
         });
       });
@@ -100,7 +114,7 @@ describe('FTPServer', function () {
     });
   });
 
-  describe('procedures::', () => {
+  describe.skip('procedures::', () => {
 
     before(() => {
       ftpClient = new FTPClient(CLIENT_OPTIONS);
