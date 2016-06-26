@@ -3,6 +3,7 @@ import {expect} from 'chai';
 
 import FTPServer from '../lib/ftp/server';
 import FTPClient from 'jsftp';
+import fsSync from 'fs';
 
 describe('FTPServer', function () {
   this.timeout(4000);
@@ -11,7 +12,7 @@ describe('FTPServer', function () {
 
   const CLIENT_OPTIONS = {
     host: '127.0.0.1',
-    port: 7002, // defaults to 21
+    port: 8080,
     user: 'user', // defaults to "anonymous"
     pass: '1234', // defaults to "@anonymous"
     debugMode: true
@@ -20,10 +21,9 @@ describe('FTPServer', function () {
   before(() => {
     ftpServer = new FTPServer({
       host: '127.0.0.1',
-      port: 7002,
+      port: 8080,
       pasvStart: 30000,
-      pasvEnd: 31000,
-      debugMode: true
+      pasvEnd: 31000
     });
     ftpServer.listen();
   });
@@ -100,7 +100,7 @@ describe('FTPServer', function () {
 
     });
 
-    describe('stat', () => {
+    describe.skip('stat', () => {
 
       it('runs successfully', (done) => {
         ftpClient.ls('/home/tyler/Documents', (err, data) => {
@@ -112,23 +112,50 @@ describe('FTPServer', function () {
       });
 
     });
-  });
 
-  describe.skip('procedures::', () => {
-
-    before(() => {
-      ftpClient = new FTPClient(CLIENT_OPTIONS);
-    });
-    after(() => {
-      ftpClient.destroy();
-    });
-
-    describe('authentication ( user )', () => {
+    describe('stor', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.auth(ftpClient.user, ftpClient.pass, (err, data) => {
+        ftpClient.put('./test/test.txt', '/home/tyler/Documents/put.txt', (hasError) => {
+          expect(!!hasError).to.equal(false);
+          done();
+        });
+      });
+
+    });
+
+    describe('retr', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.get('/home/tyler/Documents/put.txt', './test/get.txt', (hasError) => {
+          expect(!!hasError).to.equal(false);
+          fsSync.unlinkSync('./test/get.txt');
+          done();
+        });
+      });
+
+    });
+
+    describe('dele', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.raw.dele('/home/tyler/Documents/put.txt', (err, data) => {
           expect(err).to.not.exist;
-          expect(data.code).to.equal(230);
+          expect(data.isError).to.equal(false);
+          expect(data.code).to.equal(250);
+          done();
+        });
+      });
+
+    });
+
+    describe('rnfr', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.raw.dele('/home/tyler/Documents/put.txt', (err, data) => {
+          expect(err).to.not.exist;
+          expect(data.isError).to.equal(false);
+          expect(data.code).to.equal(250);
           done();
         });
       });
