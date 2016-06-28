@@ -6,7 +6,7 @@ import FTPClient from 'jsftp';
 import fsSync from 'fs';
 
 describe('FTPServer', function () {
-  this.timeout(4000);
+  this.timeout(2000);
   let ftpServer;
   let ftpClient;
 
@@ -100,13 +100,41 @@ describe('FTPServer', function () {
 
     });
 
-    describe.skip('stat', () => {
+    describe('cwd', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.ls('/home/tyler/Documents', (err, data) => {
+        ftpClient.raw.cwd('/home/tyler/Documents', (err, data) => {
           expect(err).to.not.exist;
-          expect(data).to.be.an('array');
-          expect(data.length).to.be.above(0);
+          expect(data.isError).to.equal(false);
+          expect(data.code).to.equal(250);
+
+          ftpClient.raw.pwd((err2, resp) => {
+            expect(err2).to.not.exist;
+            expect(resp.isError).to.equal(false);
+            expect(resp.code).to.equal(257);
+            expect(resp.text).to.match(/\/home\/tyler\/Documents/i);
+            done();
+          });
+        });
+      });
+
+    });
+
+    describe('stat', () => {
+
+      it('fetches data on a single file', (done) => {
+        ftpClient.raw.stat('./tyler/ftpserver/test/test.txt', (err, data) => {
+          expect(err).to.not.exist;
+          expect(data.code).to.equal(212);
+          done();
+        });
+      });
+
+      it('fetches data on a directory', (done) => {
+        ftpClient.raw.stat('./tyler/ftpserver', (err, data) => {
+          console.log(err, data)
+          expect(err).to.not.exist;
+          expect(data.code).to.equal(213);
           done();
         });
       });
@@ -116,7 +144,7 @@ describe('FTPServer', function () {
     describe('stor', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.put('./test/test.txt', '/home/tyler/Documents/put.txt', (hasError) => {
+        ftpClient.put('./test/test.txt', 'put.txt', (hasError) => {
           expect(!!hasError).to.equal(false);
           done();
         });
@@ -127,7 +155,7 @@ describe('FTPServer', function () {
     describe('retr', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.get('/home/tyler/Documents/put.txt', './test/get.txt', (hasError) => {
+        ftpClient.get('put.txt', './test/get.txt', (hasError) => {
           expect(!!hasError).to.equal(false);
           fsSync.unlinkSync('./test/get.txt');
           done();
@@ -136,10 +164,10 @@ describe('FTPServer', function () {
 
     });
 
-    describe('dele', () => {
+    describe('rnfr/rnto', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.raw.dele('/home/tyler/Documents/put.txt', (err, data) => {
+        ftpClient.rename('put.txt', 'renamed.txt', (err, data) => {
           expect(err).to.not.exist;
           expect(data.isError).to.equal(false);
           expect(data.code).to.equal(250);
@@ -149,10 +177,10 @@ describe('FTPServer', function () {
 
     });
 
-    describe('rnfr', () => {
+    describe('dele', () => {
 
       it('runs successfully', (done) => {
-        ftpClient.raw.dele('/home/tyler/Documents/put.txt', (err, data) => {
+        ftpClient.raw.dele('renamed.txt', (err, data) => {
           expect(err).to.not.exist;
           expect(data.isError).to.equal(false);
           expect(data.code).to.equal(250);
