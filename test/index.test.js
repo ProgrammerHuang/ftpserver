@@ -1,5 +1,6 @@
 /* eslint no-unused-expressions: 0 */
 import {expect} from 'chai';
+import when from 'when';
 
 import FTPServer from '../lib/ftp/server';
 import FTPClient from 'jsftp';
@@ -132,7 +133,6 @@ describe('FTPServer', function () {
 
       it('fetches data on a directory', (done) => {
         ftpClient.raw.stat('./tyler/ftpserver', (err, data) => {
-          console.log(err, data)
           expect(err).to.not.exist;
           expect(data.code).to.equal(213);
           done();

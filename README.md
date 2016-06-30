@@ -1,27 +1,69 @@
-# ftpserver [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Simple FTP server
+# xFTP [![NPM version][npm-image]][npm-url]
+> Simple and extensible promise-based FTP server.
 
 ## Installation
 
-```sh
-$ npm install --save ftpserver
-```
+`npm install xftp --save`
 
 ## Usage
 
 ```js
-var ftpserver = require('ftpserver');
+import {FTPServer} from 'xftp';
+const ftpServer = new FTPServer({...});
 
-ftpserver('Rainbow');
+ftpServer.listen().then(() => {
+  // now listening for connections
+});
 ```
-## License
 
-MIT © [Tyler Stewart]()
+You can pass an object to the constructor to set various options.
+Below are the options and their defaults.
+
+```js
+var ftpServer = new FTPServer({
+  host: '127.0.0.1',
+  port: 21,
+  pasvStart: null,
+  pasvEnd: null,
+  timeout: 30000,
+  disabledCommands: [],
+  anonymous: false,
+  logLevel: 10,
+  override: {
+    fs: null,
+    authentication: null
+  }
+});
+```
+
+### Options
+
+`pasvStart` / `pasvEnd` | **Integer**
+- Sets the range for ports to use with a passive connection.
+- The server will have the client connect to the first available port within the range.
+
+`timeout` | **Integer**
+* How long (**in milliseconds**) before a connection is closed if no commands are received.
+
+`disabledCommands` | **Array [String]**
+* String array of client commands that are forbidden.
+* **Example**: `disabledCommands: ['RMD', 'RNFR', 'RNTO']`
+
+`anonymous` | **Boolean**
+* If true, will not authenticate connections and will act as if all connections are authenticated.
+
+`logLevel` | **Integer**
+* See [Bunyan Levels](https://github.com/trentm/node-bunyan#levels).
+
+`override` | **Object**
+* Used to override various functions or classes.
+* See [Override Section](#override).
+
+## Features
+
+### Override
+
 
 
 [npm-image]: https://badge.fury.io/js/ftpserver.svg
-[npm-url]: https://npmjs.org/package/ftpserver
-[travis-image]: https://travis-ci.org/stewarttylerr/ftpserver.svg?branch=master
-[travis-url]: https://travis-ci.org/stewarttylerr/ftpserver
-[daviddm-image]: https://david-dm.org/stewarttylerr/ftpserver.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/stewarttylerr/ftpserver
+[npm-url]: https://npmjs.org/package/xftp

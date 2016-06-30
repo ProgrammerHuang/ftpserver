@@ -1,7 +1,7 @@
 {
-  "name": "ftpserver",
-  "version": "0.0.0",
-  "description": "Simple FTP server",
+  "name": "xftp",
+  "version": "0.1.0",
+  "description": "Simple and extensible promise-based FTP server",
   "homepage": "",
   "author": {
     "name": "Tyler Stewart",
@@ -13,8 +13,13 @@
   ],
   "main": "index.js",
   "keywords": [
-    ""
+    "ftp",
+    "ftp server",
+    "ftpd",
+    "node-ftp",
+    "server"
   ],
+  "bugs": "https://github.com/stewarttylerr/ftpserver/issues",
   "devDependencies": {
     "babel-core": "^5.5.0",
     "babel-eslint": "^4.1.8",
@@ -45,12 +50,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@autovance/database": "^0.1.120",
-    "dotenv": "^2.0.0",
-    "eventemitter3": "^1.2.0",
+    "bunyan": "^1.8.1",
     "lodash": "^4.13.1",
     "moment": "^2.13.0",
-    "queue": "^4.0.0",
     "when": "^3.7.7"
   }
 }
