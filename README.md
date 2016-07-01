@@ -117,6 +117,10 @@ Doing so can allow you to interact directly with the data without any
 real file access.
 ```js
 class MyFileSystem {
+  constructor() {
+    // Current connection: this.connection
+    // Bunyan logger: this.connection.bunyan
+  }
   ...
 }
 
@@ -131,6 +135,7 @@ new FTPServer({
 ```
 
 When a connection is recieved it will call `new` on the overridden class.
+The current connection will be available with `this.connection`.
 
 ##### Functions
 The following functions are to be implemented in your class and must
