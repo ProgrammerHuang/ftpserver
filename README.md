@@ -1,4 +1,4 @@
-# xFTP [![NPM version][npm-image]][npm-url]
+# ftpserver [![NPM version][npm-image]][npm-url]
 > Simple and extensible promise-based FTP server.
 
 - [Installation](#installation)
@@ -6,15 +6,17 @@
   - [Options](#options)
 - [Features](#features)
   - [Override](#override)
+    - [Authentication](#authentication)
+    - [File System](#fs)
 
 ## Installation
 
-`npm install xftp --save`
+`npm install ftpserver --save`
 
 ## Usage
 
 ```js
-import {FTPServer} from 'xftp';
+import {FTPServer} from 'ftpserver';
 const ftpServer = new FTPServer({...});
 
 ftpServer.listen().then(() => {

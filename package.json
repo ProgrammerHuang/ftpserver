@@ -1,5 +1,5 @@
 {
-  "name": "xftp",
+  "name": "ftpserver",
   "version": "0.1.0",
   "description": "Simple and extensible promise-based FTP server",
   "homepage": "",
