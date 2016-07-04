@@ -56,7 +56,7 @@ IP address clients use to connect to the server.
 This IP will be used for passive connections, so ensure it is your remote IP.
 
 #### `port` | **Integer**
-Port clients use to connec tto eh server.
+Port clients use to connect to the server.
 
 #### `pasvStart` / `pasvEnd` | **Integer**
 Sets the range for ports to use with a passive connection.  
@@ -85,6 +85,23 @@ See [Override Section](#override).
 
 ---
 ## Features
+
+### File Class
+
+The [File](https://github.com/stewarttylerr/ftpserver/blob/master/lib/ftp/file.js)
+class is used to signify a file or directory.
+
+```js
+import fs from 'fs';
+import {File} from 'FTPServer';
+
+fs.stat(..., (stat) {
+  let myFile = new File('/path/to/file/or/directory').fromStat(stat);
+});
+```
+
+You can use the `fromStat` function to populate information on the file or directory
+from the `fs` `stat` function.
 
 ### Override
 
@@ -146,7 +163,7 @@ list(dir) {}
 ```
 > Receives a path to a directory relative to the current directory.  
 If no argument, than the current directory is used.  
-Returns an array of `File` classes (see [File Section](#file))
+Returns an array of `File` classes (see [File Section](#file-class))
 
 ```js
 write(filePath, append) {}
