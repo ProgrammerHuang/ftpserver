@@ -24,7 +24,8 @@ describe('FTPServer', function () {
       host: '127.0.0.1',
       port: 8080,
       pasvStart: 30000,
-      pasvEnd: 31000
+      pasvEnd: 31000,
+      logLevel: 0
     });
     ftpServer.listen();
   });
@@ -123,18 +124,25 @@ describe('FTPServer', function () {
 
     describe('stat', () => {
 
-      it('fetches data on a single file', (done) => {
-        ftpClient.raw.stat('./tyler/ftpserver/test/test.txt', (err, data) => {
+      it('acts as the LIST command', (done) => {
+        ftpClient.ls('.', (err, data) => {
           expect(err).to.not.exist;
-          expect(data.code).to.equal(212);
+          expect(data).to.be.an('array');
+          expect(data.length).to.be.above(0);
+          expect(data[0]).to.have.property('name');
+          expect(data[0]).to.have.property('type');
+          expect(data[0]).to.have.property('time');
+          expect(data[0]).to.have.property('size');
+          expect(data[0]).to.have.property('owner');
+          expect(data[0]).to.have.property('group');
           done();
         });
       });
 
-      it('fetches data on a directory', (done) => {
-        ftpClient.raw.stat('./tyler/ftpserver', (err, data) => {
+      it('fetches info on a single file', (done) => {
+        ftpClient.raw.stat('./tyler/ftpserver/test/test.txt', (err, data) => {
           expect(err).to.not.exist;
-          expect(data.code).to.equal(213);
+          expect(data.code).to.equal(212);
           done();
         });
       });
