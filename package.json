@@ -1,6 +1,6 @@
 {
   "name": "ftpserver",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Simple and extensible promise-based FTP server",
   "homepage": "",
   "author": {
