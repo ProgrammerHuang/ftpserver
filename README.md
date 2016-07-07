@@ -12,7 +12,7 @@
   - [Override](#override)
     - [Authentication](#authentication)
     - [File System](#fs)
-
+- [Contribution](#contribution)
 
 ## Installation
 
@@ -211,4 +211,9 @@ rename(oldName, newName) {}
 > Rename a file or directory relative to the current directory.
 
 [npm-image]: https://badge.fury.io/js/ftpserver.svg
-[npm-url]: https://npmjs.org/package/ftpserver
+[npm-url]: https://npmjs.org/package/xftp
+
+
+## Contribution
+
+Feel free to submit [issues](https://github.com/stewarttylerr/ftpserver/issues) or [pull requests](https://github.com/stewarttylerr/ftpserver/pulls), any assistance is welcomed!
