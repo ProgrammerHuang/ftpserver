@@ -13,12 +13,12 @@
     - [Authentication](#authentication)
     - [File System](#fs)
 
----
+
 ## Installation
 
 `npm install ftpserver --save`
 
----
+
 ## Usage
 
 ```js
@@ -72,6 +72,7 @@ How long (*in milliseconds*) before a connection is closed if no commands are re
 
 #### `disabledCommands` | **Array [String]**
 String array of client commands that are forbidden.  
+These commands will be replied to with code 502.  
 **Example**: `disabledCommands: ['RMD', 'RNFR', 'RNTO']`
 
 #### `anonymous` | **Boolean**
@@ -88,7 +89,7 @@ This can be a string or path to a file.
 Used to override various functions or classes.  
 See [Override Section](#override).
 
----
+
 ## Features
 
 ### Classes

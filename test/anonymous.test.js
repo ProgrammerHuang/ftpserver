@@ -1,20 +1,20 @@
-/* eslint no-unused-expressions: 0 */
 import {expect} from 'chai';
 import fsSync from 'fs';
 
 import FTPServer from '../lib/ftp/server';
 import FTPClient from 'jsftp';
 
-describe('FTPServer', function () {
+describe('FTPServer - Anonymous', function () {
   this.timeout(2000);
+
   let ftpServer;
   let ftpClient;
 
   const CLIENT_OPTIONS = {
     host: '127.0.0.1',
     port: 8080,
-    user: 'user',
-    pass: '1234',
+    user: 'anonymous',
+    pass: '',
     debugMode: true
   };
 
@@ -24,7 +24,8 @@ describe('FTPServer', function () {
       port: 8080,
       pasvStart: 30000,
       pasvEnd: 31000,
-      logLevel: 0
+      logLevel: 0,
+      anonymous: true
     });
     ftpServer.listen();
   });
@@ -33,20 +34,21 @@ describe('FTPServer', function () {
     ftpServer.close();
   });
 
-  describe('commands::', () => {
+  describe('commands::', function () {
     before(() => {
       ftpClient = new FTPClient(CLIENT_OPTIONS);
     });
     after(() => {
       ftpClient.destroy();
     });
+
     describe('user', () => {
 
       it('runs successfully', (done) => {
         ftpClient.raw.user(ftpClient.user, (err, data) => {
           expect(err).to.not.exist;
           expect(data.isError).to.equal(false);
-          expect(data.code).to.equal(331);
+          expect(data.code).to.equal(230);
           done();
         });
       });
@@ -58,37 +60,12 @@ describe('FTPServer', function () {
         ftpClient.raw.pass(ftpClient.pass, (err, data) => {
           expect(err).to.not.exist;
           expect(data.isError).to.equal(false);
-          expect(data.code).to.equal(230);
+          expect(data.code).to.equal(202);
           done();
         });
       });
 
     });
-    describe('type', () => {
-
-      it('runs successfully', (done) => {
-        ftpClient.raw.type('I', (err, data) => {
-          expect(err).to.not.exist;
-          expect(data.isError).to.equal(false);
-          expect(data.code).to.equal(200);
-          done();
-        });
-      });
-
-    });
-    describe('pwd', () => {
-
-      it('runs successfully', (done) => {
-        ftpClient.raw.pwd((err, data) => {
-          expect(err).to.not.exist;
-          expect(data.isError).to.equal(false);
-          expect(data.code).to.equal(257);
-          done();
-        });
-      });
-
-    });
-
     describe('list', () => {
 
       it('runs successfully', (done) => {
