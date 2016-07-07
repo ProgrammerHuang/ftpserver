@@ -211,7 +211,7 @@ rename(oldName, newName) {}
 > Rename a file or directory relative to the current directory.
 
 [npm-image]: https://badge.fury.io/js/ftpserver.svg
-[npm-url]: https://npmjs.org/package/xftp
+[npm-url]: https://npmjs.org/package/ftpserver
 
 
 ## Contribution
