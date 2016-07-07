@@ -1,18 +1,24 @@
 # ftpserver [![NPM version][npm-image]][npm-url]
 > Simple and extensible promise-based FTP server.
 
+## Index
+
 - [Installation](#installation)
 - [Usage](#usage)
   - [Options](#options)
 - [Features](#features)
+  - [Classes](#classes)
+    - [File](#file-class)
   - [Override](#override)
     - [Authentication](#authentication)
     - [File System](#fs)
 
+---
 ## Installation
 
 `npm install ftpserver --save`
 
+---
 ## Usage
 
 ```js
@@ -48,7 +54,6 @@ var ftpServer = new FTPServer({
 });
 ```
 
----
 ### Options
 
 #### `host` | **String**
@@ -86,7 +91,9 @@ See [Override Section](#override).
 ---
 ## Features
 
-### File Class
+### Classes
+
+#### File
 
 The [File](https://github.com/stewarttylerr/ftpserver/blob/master/lib/ftp/file.js)
 class is used to signify a file or directory.
