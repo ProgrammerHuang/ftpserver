@@ -93,7 +93,7 @@ See [Override Section](#override).
 
 ### Classes
 
-#### File
+#### `File`
 
 The [File](https://github.com/stewarttylerr/ftpserver/blob/master/lib/ftp/file.js)
 class is used to signify a file or directory.
