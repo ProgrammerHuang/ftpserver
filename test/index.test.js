@@ -1,6 +1,7 @@
 /* eslint no-unused-expressions: 0 */
 import {expect} from 'chai';
 import fsSync from 'fs';
+import sinon from 'sinon';
 
 import FTPServer from '../lib/ftp/server';
 import FTPClient from 'jsftp';
@@ -9,6 +10,7 @@ describe('FTPServer', function () {
   this.timeout(2000);
   let ftpServer;
   let ftpClient;
+  let sandbox;
 
   const CLIENT_OPTIONS = {
     host: '127.0.0.1',
@@ -18,28 +20,37 @@ describe('FTPServer', function () {
     debugMode: true
   };
 
-  before(() => {
-    ftpServer = new FTPServer({
-      host: '127.0.0.1',
-      port: 8080,
-      pasvStart: 30000,
-      pasvEnd: 31000,
-      logLevel: 0
+  const SERVER_OPTIONS = {
+    host: '127.0.0.1',
+    port: 8080,
+    pasvStart: 30000,
+    pasvEnd: 31000,
+    logLevel: 60
+  };
+
+  before((done) => {
+    ftpServer = new FTPServer(SERVER_OPTIONS);
+    ftpServer.listen()
+    .then(() => {
+      ftpClient = new FTPClient(CLIENT_OPTIONS);
+      done();
     });
-    ftpServer.listen();
+  });
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   after(() => {
     ftpServer.close();
+    ftpClient.destroy();
   });
 
   describe('commands::', () => {
-    before(() => {
-      ftpClient = new FTPClient(CLIENT_OPTIONS);
-    });
-    after(() => {
-      ftpClient.destroy();
-    });
     describe('user', () => {
 
       it('runs successfully', (done) => {

@@ -13,6 +13,7 @@
     - [Authentication](#authentication)
     - [File System](#fs)
 - [Contribution](#contribution)
+- [Resources](#resources)
 
 ## Installation
 
@@ -217,3 +218,9 @@ rename(oldName, newName) {}
 ## Contribution
 
 Feel free to submit [issues](https://github.com/stewarttylerr/ftpserver/issues) or [pull requests](https://github.com/stewarttylerr/ftpserver/pulls), any assistance is welcomed!
+
+## Resources
+
+- [FTP: File Transfer Protocol](http://cr.yp.to/ftp/greeting.html)
+- [RFC 959](https://tools.ietf.org/html/rfc959)
+- [RFC 3659](http://tools.ietf.org/html/rfc3659)

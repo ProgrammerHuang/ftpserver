@@ -1,14 +1,16 @@
+/* eslint no-unused-expressions: 0 */
 import {expect} from 'chai';
 import fsSync from 'fs';
+import sinon from 'sinon';
 
 import FTPServer from '../lib/ftp/server';
 import FTPClient from 'jsftp';
 
-describe('FTPServer - Anonymous', function () {
+describe('FTPServer', function () {
   this.timeout(2000);
-
   let ftpServer;
   let ftpClient;
+  let sandbox;
 
   const CLIENT_OPTIONS = {
     host: '127.0.0.1',
@@ -18,30 +20,38 @@ describe('FTPServer - Anonymous', function () {
     debugMode: true
   };
 
-  before(() => {
-    ftpServer = new FTPServer({
-      host: '127.0.0.1',
-      port: 8080,
-      pasvStart: 30000,
-      pasvEnd: 31000,
-      logLevel: 0,
-      anonymous: true
+  const SERVER_OPTIONS = {
+    host: '127.0.0.1',
+    port: 8080,
+    pasvStart: 30000,
+    pasvEnd: 31000,
+    logLevel: 0,
+    anonymous: true
+  };
+
+  before((done) => {
+    ftpServer = new FTPServer(SERVER_OPTIONS);
+    ftpServer.listen()
+    .then(() => {
+      ftpClient = new FTPClient(CLIENT_OPTIONS);
+      done();
     });
-    ftpServer.listen();
+  });
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   after(() => {
     ftpServer.close();
+    ftpClient.destroy();
   });
 
-  describe('commands::', function () {
-    before(() => {
-      ftpClient = new FTPClient(CLIENT_OPTIONS);
-    });
-    after(() => {
-      ftpClient.destroy();
-    });
-
+  describe('commands::', () => {
     describe('user', () => {
 
       it('runs successfully', (done) => {
@@ -66,6 +76,31 @@ describe('FTPServer - Anonymous', function () {
       });
 
     });
+    describe('type', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.raw.type('I', (err, data) => {
+          expect(err).to.not.exist;
+          expect(data.isError).to.equal(false);
+          expect(data.code).to.equal(200);
+          done();
+        });
+      });
+
+    });
+    describe('pwd', () => {
+
+      it('runs successfully', (done) => {
+        ftpClient.raw.pwd((err, data) => {
+          expect(err).to.not.exist;
+          expect(data.isError).to.equal(false);
+          expect(data.code).to.equal(257);
+          done();
+        });
+      });
+
+    });
+
     describe('list', () => {
 
       it('runs successfully', (done) => {
